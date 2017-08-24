@@ -1,0 +1,1 @@
+java -classpath ./lib/jsoup-1.10.3.jar;. com.github.vacancy_aggregator.Aggregator

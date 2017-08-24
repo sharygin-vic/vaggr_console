@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Вакансии</title>
+
+    <style>
+        .vacancy_tbl {
+            border: 1px solid black;
+            width: 100%;
+        }
+        .vacancy_tbl_tdh {
+            border-bottom: 1px solid black;
+            border-right: 1px solid #eff6fa;
+            text-align: center;
+            height: 30px;
+        }
+        .vacancy_tbl_td {
+            border-bottom: 1px solid #eff6fa;
+            border-right: 1px solid #eff6fa;
+            text-align: left;
+            padding-left: 5px;
+        }
+        tr:nth-child(even) {background-color: #eff6fa}
+
+        .tr_mouce.focused {
+            background-color: #d7efff;
+        }
+        .tr_mouce:hover {
+            background: #c3e4f3;
+        }
+    </style>
+
+</head>
+<body>
+
+<h2 class="vacancy_job"></h2>
+
+<table class="vacancy_tbl" cellspacing="0">
+    <tr>
+        <th class="vacancy_tbl_tdh">№</th>
+        <th class="vacancy_tbl_tdh">Title</th>
+        <th class="vacancy_tbl_tdh">Company Name</th>
+        <th class="vacancy_tbl_tdh">Date</th>
+        <th class="vacancy_tbl_tdh">Salary</th>
+        <th class="vacancy_tbl_tdh">City</th>
+        <th class="vacancy_tbl_tdh">Publisher</th>
+        <th class="vacancy_tbl_tdh">Publisher ID</th>
+    </tr>
+
+    <!--<tr class="vacancy tr_mouce">-->
+        <!--<td class="index vacancy_tbl_td">1</td>-->
+        <!--<td class="title vacancy_tbl_td"><a href="http://javarush.ru" target="_blank">Junior Java Developer</a></td>-->
+        <!--<td class="city vacancy_tbl_td">Entire World</td>-->
+        <!--<td class="companyName vacancy_tbl_td">JavaRush</td>-->
+        <!--<td class="salary vacancy_tbl_td">2000$</td>-->
+        <!--<td class="publisher vacancy_tbl_td">https://hh.ua</td>-->
+        <!--<td class="publisher_id vacancy_tbl_td">job_1000035534</td>-->
+    <!--</tr>-->
+
+    <tr class="vacancy template tr_mouce" style="display: none">
+        <td class="index vacancy_tbl_td"></td>
+        <td class="title vacancy_tbl_td"><a href="url" target="_blank"></a></td>
+        <td class="companyName vacancy_tbl_td"></td>
+        <td class="date vacancy_tbl_td"></td>
+        <td class="salary vacancy_tbl_td"></td>
+        <td class="city vacancy_tbl_td"></td>
+        <td class="publisher vacancy_tbl_td"></td>
+        <td class="publisher_id vacancy_tbl_td"></td>
+    </tr>
+</table>
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".tr_mouce").click(function() {
+            $(this).toggleClass('focused');
+        });
+    });
+
+</script>
+
+</body>
+</html>
