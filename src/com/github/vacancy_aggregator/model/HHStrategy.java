@@ -43,15 +43,13 @@ public class HHStrategy extends AbstractStrategy implements Strategy {
         String dayMonthStr = element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-date").text();
         vacancy.setVacancyDate(getVacancyDate(dayMonthStr));
 
-//      vacancy.setResponsibility(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy_snippet_responsibility").get(0).text());
-//      vacancy.setRequirement(element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy_snippet_requirement").get(0).text());
         return vacancy;
     }
 
     @Override
     protected String getUrlOfWantedPage(String vacancyJobString, String vacancyLocationName) {
         String jobString =  vacancyJobString == null ? "" : vacancyJobString.trim().replaceAll("\\s+", "+");
-        String locationString = vacancyLocationName == null ? "" : vacancyLocationName;
+        String locationString = vacancyLocationName == null ? "" : vacancyLocationName.trim();
         if (!locationString.equals("")) {
             locationString = getMappedLocationValue(locationString);
         }
@@ -73,7 +71,7 @@ public class HHStrategy extends AbstractStrategy implements Strategy {
         if (monthNum >= 0) {
             LocalDate ld = LocalDate.now().withMonth(monthNum).withDayOfMonth(dayNum);
             if (ld.isAfter(LocalDate.now())) {
-                ld.minusYears(1);
+                ld = ld.minusYears(1);
             }
             result = java.sql.Date.valueOf(ld);
         }

@@ -27,6 +27,8 @@ public abstract class AbstractStrategy implements Strategy {
 
         String urlOfWantedPage = getUrlOfWantedPage(vacancyJobString, vacancyLocationName);
 
+                    //System.out.println("( " + vacancyJobString + " - " + vacancyLocationName + " )   " + urlOfWantedPage);
+
         while (true) {
             try {
                 Document doc = getDocument(urlOfWantedPage, page);
@@ -38,9 +40,6 @@ public abstract class AbstractStrategy implements Strategy {
                     break;
                 }
                 for (Element element : elements) {
-//                    System.out.println(element.toString());
-//                    System.out.println("---------");
-
                     Vacancy vacancy = getVacancyFromElement(element);
                     if (vacancy != null) {
                         vacancy.setJob(vacancyJobString);
@@ -72,7 +71,6 @@ public abstract class AbstractStrategy implements Strategy {
                     .referrer(REFERRER)
                     .timeout(TIMEOUT)
                     .get();
-            //System.out.println(doc.html());
         }
         catch (Exception e) {
             e.printStackTrace();

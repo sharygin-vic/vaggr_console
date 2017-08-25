@@ -23,9 +23,9 @@ public class HtmlView implements View {
     private Controller controller;
 
     @Override
-    public void update(List<Vacancy> vacancies, String vacancyJobString) {
+    public void update(List<Vacancy> vacancies, String vacancyJobString, String vacancyLocationName) {
         try {
-            updateFile(getUpdatedFileContent(vacancies, vacancyJobString), vacancyJobString);
+            updateFile(getUpdatedFileContent(vacancies, vacancyJobString, vacancyLocationName), vacancyJobString);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -41,35 +41,35 @@ public class HtmlView implements View {
         controller.onSearchParamsChanged(vacancyJobString, vacancyLocationName);
     }
 
-    private String getUpdatedFileContent(List<Vacancy> vacancies, String vacancyJobString) {
+    private String getUpdatedFileContent(List<Vacancy> vacancies, String vacancyJobString, String vacancyLocationName) {
         try {
             Document doc = getDocument();
 
-            doc.getElementsByClass("vacancy_job").first().appendText(vacancyJobString);
+            doc.getElementsByClass("vacancy_job").first().appendText(String.format("%s  (%s)", vacancyJobString, vacancyLocationName));
 
             Element tempElement = doc.getElementsByClass("template").first();
-
-//            System.out.println(tempElement);
 
             Element tempNewElement = tempElement.clone();
             tempNewElement.removeAttr("style");
             tempNewElement.removeClass("template");
 
-//            System.out.println("-----------------");
-//            System.out.println(tempNewElement);
-
             int index = 0;
             for (Vacancy vacancy : vacancies) {
-
-//                System.out.println(vacancy);
-
                 index++;
                 Element vacansyElement = tempNewElement.clone();
                 vacansyElement.getElementsByClass("index").first().appendText("" + index);
-                vacansyElement.getElementsByClass("city").first().appendText(vacancy.getCity());
-                vacansyElement.getElementsByClass("companyName").first().appendText(vacancy.getCompanyName());
-                vacansyElement.getElementsByClass("salary").first().appendText(vacancy.getSalary());
-                vacansyElement.getElementsByClass("publisher").first().appendText(vacancy.getPublisherSiteName());
+                if (vacancy.getCity() != null) {
+                    vacansyElement.getElementsByClass("city").first().appendText(vacancy.getCity());
+                }
+                if (vacancy.getCompanyName() != null) {
+                    vacansyElement.getElementsByClass("companyName").first().appendText(vacancy.getCompanyName());
+                }
+                if (vacancy.getSalary() != null) {
+                    vacansyElement.getElementsByClass("salary").first().appendText(vacancy.getSalary());
+                }
+                if (vacancy.getPublisherSiteName() != null) {
+                    vacansyElement.getElementsByClass("publisher").first().appendText(vacancy.getPublisherSiteName());
+                }
                 if (vacancy.getIdFromPublisherSite() != null) {
                     vacansyElement.getElementsByClass("publisher_id").first().appendText(vacancy.getIdFromPublisherSite());
                 }
@@ -80,18 +80,15 @@ public class HtmlView implements View {
                 }
 
                 Element refElement = vacansyElement.getElementsByClass("title").first().getElementsByTag("a").first();
-                refElement.appendText(vacancy.getTitle());
-                refElement.attr("href", vacancy.getUrl());
-
-//                System.out.println("=============");
-//                System.out.println(vacansyElement);
+                if (vacancy.getTitle() != null) {
+                    refElement.appendText(vacancy.getTitle());
+                }
+                if (vacancy.getUrl() != null) {
+                    refElement.attr("href", vacancy.getUrl());
+                }
 
                 tempElement.before(vacansyElement.outerHtml());
-
-//                System.out.println("-----------------");
-//                System.out.println(doc);
             }
-
             return doc.html();
         }
         catch (IOException e) {

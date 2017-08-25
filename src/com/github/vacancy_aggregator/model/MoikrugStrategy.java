@@ -62,10 +62,7 @@ public class MoikrugStrategy extends AbstractStrategy implements Strategy {
             e.printStackTrace();
         }
         vacancy.setVacancyDate(date);
-
         vacancy.setPublisherSiteName(SITE_NAME);
-        //vacancy.setResponsibility();
-        //vacancy.setRequirement();
 
         return vacancy;
     }
@@ -73,7 +70,7 @@ public class MoikrugStrategy extends AbstractStrategy implements Strategy {
     @Override
     protected String getUrlOfWantedPage(String vacancyJobString, String vacancyLocationName) {
         String jobString =  vacancyJobString == null ? "" : vacancyJobString.trim().replaceAll("\\s+", "+");
-        String locationString = vacancyLocationName == null ? "" : vacancyLocationName;
+        String locationString = vacancyLocationName == null ? "" : vacancyLocationName.trim();
         if (!locationString.equals("")) {
             locationString = getMappedLocationValue(locationString);
         }

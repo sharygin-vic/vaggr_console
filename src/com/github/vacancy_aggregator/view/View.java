@@ -8,6 +8,6 @@ import java.util.List;
  * Created by dell on 11-Jul-17.
  */
 public interface View {
-    void update(List<Vacancy> vacancies, String jobString);
+    void update(List<Vacancy> vacancies, String vacancyJobString, String vacancyLocationName);
     void setController(Controller controller);
 }

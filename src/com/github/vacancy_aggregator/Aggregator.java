@@ -19,7 +19,7 @@ import java.util.Properties;
 public class Aggregator {
     public static void main(String[] args) {
         String vacancyJobString = "java";
-        String vacancyLocationName = "Odessa";
+        String vacancyLocationName = "Odesa"; //"Ukraine";
 
         View view = new HtmlView();
 

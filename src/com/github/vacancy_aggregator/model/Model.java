@@ -25,6 +25,6 @@ public class Model {
         for (Provider provider : providers) {
             vacancies.addAll(provider.getJavaVacancies(vacancyJobString, vacancyLocationName));
         }
-        view.update(vacancies, vacancyJobString);
+        view.update(vacancies, vacancyJobString, vacancyLocationName);
     }
 }

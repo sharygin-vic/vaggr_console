@@ -12,7 +12,9 @@ public class ProvidersFactory {
         else if ("MoikrugStrategy".equals(strategyClassName)) {
             return new Provider(new MoikrugStrategy());
         }
-
+        else if ("WorkUaStrategy".equals(strategyClassName)) {
+            return new Provider(new WorkUaStrategy());
+        }
 
         else {
             return null;
