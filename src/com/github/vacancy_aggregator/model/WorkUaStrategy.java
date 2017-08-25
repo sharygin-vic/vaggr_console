@@ -58,15 +58,15 @@ public class WorkUaStrategy  extends AbstractStrategy implements Strategy {
         Vacancy vacancy = new Vacancy();
         vacancy.setPublisherSiteName(SITE_NAME);
 
-        vacancy.setTitle(element.getElementsByAttribute("title").get(0).text());  //.attr("href"));
+        vacancy.setTitle(element.getElementsByAttribute("title").get(0).text().trim());
 
-        String url = element.getElementsByAttribute("title").get(0).attr("href");
+        String url = element.getElementsByAttribute("title").get(0).attr("href").trim();
         vacancy.setUrl(SITE_NAME + url);
 
         String[] urlParams = url.split("/");
-        vacancy.setIdFromPublisherSite(urlParams[2]);
+        vacancy.setIdFromPublisherSite(urlParams[2].trim());
 
-        String dateStr = element.getElementsByAttribute("title").get(0).attr("title");
+        String dateStr = element.getElementsByAttribute("title").get(0).attr("title").trim();
         int pos = dateStr.toLowerCase().indexOf("вакансия от");
         if (pos >= 0) {
             dateStr = dateStr.substring(pos + "вакансия от".length()).trim();
@@ -81,13 +81,13 @@ public class WorkUaStrategy  extends AbstractStrategy implements Strategy {
                     continue;
                 }
                 Elements spans = child.children();
-                String company = spans.get(0).text();
+                String company = spans.get(0).text().trim();
                 vacancy.setCompanyName(company);
 
                 for (int j = 1; j < spans.size(); j++) {
                     Element span = spans.get(j);
                     if (span.hasClass("text-muted")) {
-                        String city = spans.get(j+1).text().split("·")[0];
+                        String city = spans.get(j+1).text().split("·")[0].trim();
                         vacancy.setCity(city);
                         break;
                     }
@@ -98,7 +98,7 @@ public class WorkUaStrategy  extends AbstractStrategy implements Strategy {
                 Elements spans = child.getElementsByTag("span");
                 for (Element span : spans) {
                     if (span.hasClass("nowrap")) {
-                        String salary = span.text();
+                        String salary = span.text().trim();
                         if (salary.endsWith("*")) {
                             salary = salary.substring(0, salary.length()-1);
                         }
