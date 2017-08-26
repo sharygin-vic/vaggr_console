@@ -22,13 +22,13 @@ public class Model {
         this.providers = providers;
     }
 
-    public void searchParamsChanged(String vacancyJobString, String vacancyLocationName) {
+    public void searchParamsChanged(VacanciesSearchCommand vacanciesSearchCommand) {
         List<Vacancy> vacancies = new ArrayList<Vacancy>();
         for (Provider provider : providers) {
-            vacancies.addAll(provider.getJavaVacancies(vacancyJobString, vacancyLocationName));
+            vacancies.addAll(provider.getJavaVacancies(vacanciesSearchCommand));
         }
         sortDefault(vacancies);
-        view.update(vacancies, vacancyJobString, vacancyLocationName);
+        view.update(vacancies, vacanciesSearchCommand.getVacancyJobString(), vacanciesSearchCommand.getVacancyLocationName());
     }
 
     public void sortDefault(List<Vacancy> vacancies) {

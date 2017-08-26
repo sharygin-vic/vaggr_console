@@ -17,7 +17,7 @@ public class Provider {
         this.strategy = strategy;
     }
 
-    public List<Vacancy> getJavaVacancies(String vacancySearchString, String vacancyLocationName) {
-        return strategy.getVacancies(vacancySearchString, vacancyLocationName);
+    public List<Vacancy> getJavaVacancies(VacanciesSearchCommand vacanciesSearchCommand) {
+        return strategy.getVacancies(vacanciesSearchCommand.getVacancyJobString(), vacanciesSearchCommand.getVacancyLocationName());
     }
 }

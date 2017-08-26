@@ -1,0 +1,45 @@
+﻿# VacanciesSearchScript
+
+# - This is a comment line.
+
+# The next words are the set of possible vacancies locations:
+# Ukraine
+# default
+# Odesa
+# Vinnytsya
+# Lutsk
+# Dnipro
+# Donetsk
+# Zhytomyr
+# Uzhhorod
+# Zaporizhzhya
+# IvanoFrankivsk
+# Kyiv
+# Kropyvnytskyi
+# Luhansk
+# Lviv
+# Mykolaiv
+# Poltava
+# Rivne
+# Sumy
+# Ternopil
+# Kharkiv
+# Kherson
+# Khmelnytskyi
+# Cherkasy
+# Chernihiv
+# Chernivtsi
+
+# Search scenario. Format: Location; SearchWord[ SerchWord[ SerchWord]...[ SerchWord]]
+
+Odesa; java
+#Odesa; sql
+Odesa; oracle
+Odesa; delphi
+#Odesa; программист
+
+# vacancy java for android:
+#Odesa; java android
+
+# vacancy spring with angular:
+#Odesa; spring angular

@@ -1,6 +1,9 @@
 package com.github.vacancy_aggregator;
 
 import com.github.vacancy_aggregator.model.Model;
+import com.github.vacancy_aggregator.model.VacanciesSearchCommand;
+
+import java.util.List;
 
 
 /**
@@ -16,7 +19,13 @@ public class Controller {
         this.model = model;
     }
 
-    public void onSearchParamsChanged(String vacancySearchString, String vacancyLocationName) {
-        model.searchParamsChanged(vacancySearchString, vacancyLocationName);
+    public void onSearchParamsChanged(VacanciesSearchCommand vacanciesSearchCommand) {
+        model.searchParamsChanged(vacanciesSearchCommand);
+    }
+
+    public void onSearchParamsChanged(List<VacanciesSearchCommand> commands) {
+        for (VacanciesSearchCommand c : commands) {
+            model.searchParamsChanged(c);
+        }
     }
 }

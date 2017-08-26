@@ -1,6 +1,7 @@
 package com.github.vacancy_aggregator.view;
 
 import com.github.vacancy_aggregator.Controller;
+import com.github.vacancy_aggregator.model.VacanciesSearchCommand;
 import com.github.vacancy_aggregator.vo.Vacancy;
 import com.github.vacancy_aggregator.services.PathHelper;
 import org.jsoup.Jsoup;
@@ -8,7 +9,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,8 +41,12 @@ public class HtmlView implements View {
         this.controller = controller;
     }
 
-    public void userSearchParamsChangedEmulationMethod(String vacancyJobString, String vacancyLocationName) {
-        controller.onSearchParamsChanged(vacancyJobString, vacancyLocationName);
+    public void userSearchParamsChangedEmulationMethod(VacanciesSearchCommand vacanciesSearchCommand) {
+        controller.onSearchParamsChanged(vacanciesSearchCommand);
+    }
+
+    public void userSearchParamsChangedEmulationMethod(List<VacanciesSearchCommand> commands) {
+        controller.onSearchParamsChanged(commands);
     }
 
     private String getUpdatedFileContent(List<Vacancy> vacancies, String vacancyJobString, String vacancyLocationName) {
@@ -117,13 +125,29 @@ public class HtmlView implements View {
         if (fileContent == null || fileContent.length() == 0) {
             return;
         }
+        String fileName = PathHelper.generateNextHtmlResultAbsolutePathString(vacancyJobString);
         try (
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(PathHelper.generateNextHtmlResultAbsolutePathString(vacancyJobString)).toFile()),StandardCharsets.UTF_8))
-                //BufferedWriter writer = Files.newBufferedWriter(Paths.get(PathHelper.generateNextHtmlResultAbsolutePathString(vacancyJobString)), StandardCharsets.UTF_8);
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(fileName).toFile()),StandardCharsets.UTF_8))
+                //BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName), StandardCharsets.UTF_8);
         ) {
             writer.write(fileContent);
-        } catch (IOException e) {
+            openFileInBrowser(fileName);
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void openFileInBrowser(String fileName) throws URISyntaxException, IOException {
+        String url = "file:///" + fileName.replace(" ", "%20").replace("\\", "/");
+
+        if(Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            URI uri = new URI(url);
+            desktop.browse(uri);
+        }
+        else {
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec("xdg-open " + url);
         }
     }
 
