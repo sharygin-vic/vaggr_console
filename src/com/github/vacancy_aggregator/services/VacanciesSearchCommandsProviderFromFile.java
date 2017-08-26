@@ -14,7 +14,7 @@ public class VacanciesSearchCommandsProviderFromFile implements VacanciesSearchC
     public List<VacanciesSearchCommand> getCommands() {
         ArrayList<VacanciesSearchCommand> result = new ArrayList<>();
 
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(PathHelper.getConfigAbsolutePathString() + "VacanciesSearch.script"))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(PathHelper.getConfigUserAbsolutePathString() + "VacanciesSearch.script"))) {
             String line;
             while( (line = reader.readLine()) != null) {
                 line = line.trim();

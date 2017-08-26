@@ -17,7 +17,7 @@ public class StrategiesProviderFromFile implements StrategiesProvider {
     @Override
     public List<Provider> getProviders() {
         List<Provider> result = new ArrayList<Provider>();
-        try (Reader reader = new BufferedReader(new FileReader(PathHelper.getConfigAbsolutePathString() + "strategies.properties")))
+        try (Reader reader = new BufferedReader(new FileReader(PathHelper.getConfigUserAbsolutePathString() + "strategies.properties")))
         {
             Properties prop = new Properties();
             prop.load(reader);

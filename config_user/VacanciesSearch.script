@@ -33,13 +33,15 @@
 # Search scenario. Format: Location; SearchWord[ SerchWord[ SerchWord]...[ SerchWord]]
 
 Odesa; java
-#Odesa; sql
+##Odesa; sql
 Odesa; oracle
 Odesa; delphi
-#Odesa; программист
+##Odesa; программист
 
 # vacancy java for android:
 #Odesa; java android
 
 # vacancy spring with angular:
 #Odesa; spring angular
+
+#Ukraine; java

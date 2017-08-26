@@ -27,7 +27,6 @@ public abstract class AbstractStrategy implements Strategy {
 
         String urlOfWantedPage = getUrlOfWantedPage(vacancyJobString, vacancyLocationName);
 
-                    //System.out.println("( " + vacancyJobString + " - " + vacancyLocationName + " )   " + urlOfWantedPage);
 
         while (true) {
             try {
@@ -35,6 +34,16 @@ public abstract class AbstractStrategy implements Strategy {
                 if (doc == null) {
                     break;
                 }
+
+
+//                System.out.println();
+//                System.out.println("-----------------------------------------");
+//                System.out.println("( " + vacancyJobString + " - " + vacancyLocationName + " )   " + urlOfWantedPage);
+//                System.out.println("-----------------------------------------");
+//                System.out.println();
+
+
+
                 Elements elements = getVacancyElements(doc);
                 if (elements.size() == 0) {
                     break;
@@ -43,6 +52,9 @@ public abstract class AbstractStrategy implements Strategy {
                     Vacancy vacancy = getVacancyFromElement(element);
                     if (vacancy != null) {
                         vacancy.setJob(vacancyJobString);
+                        if (vacancy.getCompanyName() == null || vacancy.getCompanyName().trim().length() == 0) {
+                            vacancy.setCompanyName("Anonymous employer");
+                        }
                         res.add(vacancy);
                     }
                 }
@@ -86,7 +98,7 @@ public abstract class AbstractStrategy implements Strategy {
         String result;
         Properties prop = new Properties();
         try (Reader reader = new FileReader(
-                Paths.get(PathHelper.getConfigAbsolutePathString() + this.getClass().getSimpleName() + "Locations.properties").toFile())
+                Paths.get(PathHelper.getConfigSysAbsolutePathString() + this.getClass().getSimpleName() + "Locations.properties").toFile())
         ){
             prop.load(reader);
             result = prop.getProperty(locationString);

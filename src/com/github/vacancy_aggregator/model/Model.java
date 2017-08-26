@@ -36,17 +36,40 @@ public class Model {
             @Override
             public int compare(Vacancy o1, Vacancy o2) {
                 int result;
+                if (o1 == null) return -1;
+                if (o2 == null) return -1;
 
-                result = o1.getCompanyName().compareToIgnoreCase(o2.getCompanyName());
-                if (result != 0) return result;
+                if (o1.getCompanyName() == null || o2.getCompanyName() == null) {
+                    return -1;
+                }
+                else {
+                    result = o1.getCompanyName().compareToIgnoreCase(o2.getCompanyName());
+                    if (result != 0) return result;
+                }
 
-                result = - o1.getVacancyDate().compareTo(o2.getVacancyDate());
-                if (result != 0) return result;
+                if (o1.getVacancyDate() == null || o2.getVacancyDate() == null) {
+                    return -1;
+                }
+                else {
+                    result = -o1.getVacancyDate().compareTo(o2.getVacancyDate());
+                    if (result != 0) return result;
+                }
 
-                result = o1.getTitle().compareToIgnoreCase(o2.getTitle());
-                if (result != 0) return result;
+                if (o1.getTitle() == null) {
+                    return -1;
+                }
+                else {
+                    result = o1.getTitle().compareToIgnoreCase(o2.getTitle());
+                    if (result != 0) return result;
+                }
 
-                result = o1.getCity().compareToIgnoreCase(o2.getCity());
+                if (o1.getCity() == null) {
+                    return -1;
+                }
+                else {
+                    result = o1.getCity().compareToIgnoreCase(o2.getCity());
+                }
+
                 return result;
             }
         });

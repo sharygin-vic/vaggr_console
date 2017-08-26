@@ -23,7 +23,7 @@ import java.util.List;
  * Created by dell on 11-Jul-17.
  */
 public class HtmlView implements View {
-    private final String htmlTemplateFilePath = PathHelper.getConfigAbsolutePathString() + "result_tmpl.html";
+    private final String htmlTemplateFilePath = PathHelper.getConfigSysAbsolutePathString() + "result_tmpl.html";
     private Controller controller;
 
     @Override

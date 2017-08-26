@@ -18,8 +18,12 @@ public class PathHelper {
         return absPathStr.substring(0, absPathStr.length() - relativePathStr.length() + 1);
     }
 
-    public static String getConfigAbsolutePathString() {
-        return getAbsoluteClassPathString((new PathHelper()).getClass()) + "config" + System.getProperty("file.separator");
+    public static String getConfigSysAbsolutePathString() {
+        return getAbsoluteClassPathString((new PathHelper()).getClass()) + "config_sys" + System.getProperty("file.separator");
+    }
+
+    public static String getConfigUserAbsolutePathString() {
+        return getAbsoluteClassPathString((new PathHelper()).getClass()) + "config_user" + System.getProperty("file.separator");
     }
 
     public static String getHtmlResultAbsolutePathString() {

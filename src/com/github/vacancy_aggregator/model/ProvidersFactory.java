@@ -15,6 +15,9 @@ public class ProvidersFactory {
         else if ("WorkUaStrategy".equals(strategyClassName)) {
             return new Provider(new WorkUaStrategy());
         }
+        else if ("RabotaUaStrategy".equals(strategyClassName)) {
+            return new Provider(new RabotaUaStrategy());
+        }
 
         else {
             return null;
