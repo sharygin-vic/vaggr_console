@@ -23,7 +23,7 @@ public class HHStrategy extends AbstractStrategy implements Strategy {
     }
 
     @Override
-    protected Elements getVacancyElements(Document doc) {
+    protected Elements getVacancyElements(Document doc, int page) {
         return doc.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy");
     }
 

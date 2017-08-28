@@ -55,7 +55,7 @@ public class Model {
                     if (result != 0) return result;
                 }
 
-                if (o1.getTitle() == null) {
+                if (o1.getTitle() == null || o2.getTitle() == null) {
                     return -1;
                 }
                 else {
@@ -63,7 +63,7 @@ public class Model {
                     if (result != 0) return result;
                 }
 
-                if (o1.getCity() == null) {
+                if (o1.getCity() == null || o2.getCity() == null) {
                     return -1;
                 }
                 else {

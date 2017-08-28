@@ -27,7 +27,6 @@ public abstract class AbstractStrategy implements Strategy {
 
         String urlOfWantedPage = getUrlOfWantedPage(vacancyJobString, vacancyLocationName);
 
-
         while (true) {
             try {
                 Document doc = getDocument(urlOfWantedPage, page);
@@ -44,8 +43,8 @@ public abstract class AbstractStrategy implements Strategy {
 
 
 
-                Elements elements = getVacancyElements(doc);
-                if (elements.size() == 0) {
+                Elements elements = getVacancyElements(doc, page);
+                if (elements == null || elements.size() == 0) {
                     break;
                 }
                 for (Element element : elements) {
@@ -69,7 +68,7 @@ public abstract class AbstractStrategy implements Strategy {
 
     protected abstract int getMinimalEnabledPageNum();    // 0 or 1
 
-    protected abstract Elements getVacancyElements(Document doc);
+    protected abstract Elements getVacancyElements(Document doc, int page);
 
     protected abstract Vacancy getVacancyFromElement(Element element);
 

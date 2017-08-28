@@ -19,7 +19,7 @@ public class RabotaUaStrategy extends AbstractStrategy implements Strategy {
     }
 
     @Override
-    protected Elements getVacancyElements(Document doc) {
+    protected Elements getVacancyElements(Document doc, int page) {
         return doc.select("table.f-vacancylist-tablewrap tr[id~=[0..9]*]");
     }
 

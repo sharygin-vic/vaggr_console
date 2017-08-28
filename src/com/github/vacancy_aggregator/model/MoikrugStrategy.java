@@ -26,7 +26,7 @@ public class MoikrugStrategy extends AbstractStrategy implements Strategy {
     }
 
     @Override
-    protected Elements getVacancyElements(Document doc) {
+    protected Elements getVacancyElements(Document doc, int page) {
         return doc.getElementsByClass("job");
     }
 

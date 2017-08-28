@@ -18,6 +18,10 @@ public class ProvidersFactory {
         else if ("RabotaUaStrategy".equals(strategyClassName)) {
             return new Provider(new RabotaUaStrategy());
         }
+        else if ("TrudComStrategy".equals(strategyClassName)) {
+            return new Provider(new TrudComStrategy());
+        }
+
 
         else {
             return null;
