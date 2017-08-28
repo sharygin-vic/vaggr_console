@@ -30,6 +30,8 @@
 # Chernihiv
 # Chernivtsi
 
+# =============================================
+
 # Search scenario. Format: Location; SearchWord[ SerchWord[ SerchWord]...[ SerchWord]]
 
 Odesa; java

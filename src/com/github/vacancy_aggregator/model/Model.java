@@ -36,36 +36,50 @@ public class Model {
             @Override
             public int compare(Vacancy o1, Vacancy o2) {
                 int result;
-                if (o1 == null) return -1;
-                if (o2 == null) return -1;
+                if (o1 == null && o2 != null) return -1;
+                else if (o1 != null && o2 == null) return 1;
+                else if (o1 == null && o2 == null) return 0;
 
-                if (o1.getCompanyName() == null || o2.getCompanyName() == null) {
+                if (o1.getCompanyName() == null && o2.getCompanyName() != null)
                     return -1;
-                }
-                else {
+                else if (o1.getCompanyName() != null && o2.getCompanyName() == null)
+                    return 1;
+                else if (o1.getCompanyName() == null && o2.getCompanyName() == null)
+                    return 0;
+                else
+                    {
                     result = o1.getCompanyName().compareToIgnoreCase(o2.getCompanyName());
                     if (result != 0) return result;
                 }
 
-                if (o1.getVacancyDate() == null || o2.getVacancyDate() == null) {
+                if (o1.getTitle() == null && o2.getTitle() != null)
                     return -1;
-                }
-                else {
-                    result = -o1.getVacancyDate().compareTo(o2.getVacancyDate());
-                    if (result != 0) return result;
-                }
-
-                if (o1.getTitle() == null || o2.getTitle() == null) {
-                    return -1;
-                }
+                else if (o1.getTitle() != null && o2.getTitle() == null)
+                    return 1;
+                else if (o1.getTitle() == null && o2.getTitle() == null)
+                    return 0;
                 else {
                     result = o1.getTitle().compareToIgnoreCase(o2.getTitle());
                     if (result != 0) return result;
                 }
 
-                if (o1.getCity() == null || o2.getCity() == null) {
+                if (o1.getVacancyDate() == null && o2.getVacancyDate() != null)
+                    return 1;
+                else if (o1.getVacancyDate() != null && o2.getVacancyDate() == null)
                     return -1;
+                else if (o1.getVacancyDate() == null && o2.getVacancyDate() == null)
+                    return 0;
+                else {
+                    result = -o1.getVacancyDate().compareTo(o2.getVacancyDate());
+                    if (result != 0) return result;
                 }
+
+                if (o1.getCity() == null && o2.getCity() != null)
+                    return -1;
+                else if (o1.getCity() != null && o2.getCity() == null)
+                    return 1;
+                else if (o1.getCity() == null && o2.getCity() == null)
+                    return 0;
                 else {
                     result = o1.getCity().compareToIgnoreCase(o2.getCity());
                 }

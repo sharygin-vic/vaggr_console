@@ -21,7 +21,9 @@ public class ProvidersFactory {
         else if ("TrudComStrategy".equals(strategyClassName)) {
             return new Provider(new TrudComStrategy());
         }
-
+        else if ("NeuvooComUaStrategy".equals(strategyClassName)) {
+            return new Provider(new NeuvooComUaStrategy());
+        }
 
         else {
             return null;
