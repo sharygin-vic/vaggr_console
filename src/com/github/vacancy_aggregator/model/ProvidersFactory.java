@@ -24,6 +24,10 @@ public class ProvidersFactory {
         else if ("NeuvooComUaStrategy".equals(strategyClassName)) {
             return new Provider(new NeuvooComUaStrategy());
         }
+        else if ("JobsDouUaStrategy".equals(strategyClassName)) {
+            return new Provider(new JobsDouUaStrategy());
+        }
+
 
         else {
             return null;
