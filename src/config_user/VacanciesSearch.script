@@ -32,7 +32,7 @@
 
 # =============================================
 
-# Search scenario. Format: Location; SearchWord[ SerchWord[ SerchWord]...[ SerchWord]]
+# Search scenario. Format: Location; SearchWord[ SearchWord[ SearchWord]...[ SearchWord]]
 
 Odesa; java
 ##Odesa; sql

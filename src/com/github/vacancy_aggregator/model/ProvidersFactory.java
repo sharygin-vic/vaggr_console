@@ -27,6 +27,9 @@ public class ProvidersFactory {
         else if ("JobsDouUaStrategy".equals(strategyClassName)) {
             return new Provider(new JobsDouUaStrategy());
         }
+        else if ("UaIndeedComStrategy".equals(strategyClassName)) {
+            return new Provider(new UaIndeedComStrategy());
+        }
 
 
         else {

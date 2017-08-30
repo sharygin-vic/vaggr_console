@@ -33,11 +33,11 @@ public abstract class AbstractStrategy implements Strategy {
                 if (doc == null) {
                     break;
                 }
-
+//                System.out.println(doc);
 
 //                System.out.println();
 //                System.out.println("-----------------------------------------");
-//                System.out.println("( " + vacancyJobString + " - " + vacancyLocationName + " )   " + urlOfWantedPage);
+//                System.out.println("( " + vacancyJobString + " - " + vacancyLocationName + " )   " + urlOfWantedPage + "    page = " + page);
 //                System.out.println("-----------------------------------------");
 //                System.out.println();
 
@@ -74,10 +74,14 @@ public abstract class AbstractStrategy implements Strategy {
 
     protected abstract String getUrlOfWantedPage(String vacancyJobString, String vacancyLocationName);
 
+    protected int getPageValue(int pageNum) {
+        return pageNum;
+    }
+
     protected Document getDocument(String urlOfWantedPage, int page) throws IOException {
         Document doc = null;
         try {
-            doc = Jsoup.connect(urlOfWantedPage.replace("{PAGE_VALUE}", "" + page))
+            doc = Jsoup.connect(urlOfWantedPage.replace("{PAGE_VALUE}", "" + getPageValue(page)))
                     .userAgent(USER_AGENT)
                     .referrer(REFERRER)
                     .timeout(TIMEOUT)
