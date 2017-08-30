@@ -87,12 +87,19 @@ public class HtmlView implements View {
                     vacansyElement.getElementsByClass("date").first().appendText(dateStr);
                 }
 
-                Element refElement = vacansyElement.getElementsByClass("title").first().getElementsByTag("a").first();
-                if (vacancy.getTitle() != null) {
-                    refElement.appendText(vacancy.getTitle());
-                }
+                Element refElement = vacansyElement.select("td.title a").first();
                 if (vacancy.getUrl() != null) {
+                    if (vacancy.getTitle() != null) {
+                        refElement.appendText(vacancy.getTitle());
+                    }
                     refElement.attr("href", vacancy.getUrl());
+                }
+                else {
+                    refElement.remove();
+                    Element cellElement = vacansyElement.select("td.title").first();
+                    if (vacancy.getTitle() != null) {
+                        cellElement.appendText(vacancy.getTitle());
+                    }
                 }
 
                 tempElement.before(vacansyElement.outerHtml());

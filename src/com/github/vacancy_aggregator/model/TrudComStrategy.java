@@ -61,10 +61,23 @@ public class TrudComStrategy extends AbstractStrategy implements Strategy {
 
         vacancy.setIdFromPublisherSite(idElement.id());
 
+        Element locationElement = element.select("span.geo-location").first();
+        if (locationElement != null) {
+            vacancy.setCity(locationElement.text());
+        }
+        else {
+            vacancy.setCity(locationString);
+        }
+
         Element titleElement = element.select("a.item-link").first();
         vacancy.setTitle(titleElement.text());
         String urlResource = titleElement.attr("href");
-        vacancy.setUrl(SITE_MASK_NAME.replace("{LOCATION_STRING}", locationString) + urlResource);
+        if (urlResource.contains("javascript")) {
+            vacancy.setUrl(getUrlOfVacancy(vacancy.getTitle()));
+        }
+        else {
+            vacancy.setUrl(SITE_MASK_NAME.replace("{LOCATION_STRING}", locationString) + urlResource);
+        }
 
         Element companyElement = element.select("span.institution span").first();
         if (companyElement == null) {
@@ -72,14 +85,6 @@ public class TrudComStrategy extends AbstractStrategy implements Strategy {
         }
         if (companyElement != null) {
             vacancy.setCompanyName(companyElement.text());
-        }
-
-        Element locationElement = element.select("span.geo-location").first();
-        if (locationElement != null) {
-            vacancy.setCity(locationElement.text());
-        }
-        else {
-            vacancy.setCity(locationString);
         }
 
         Element salaryElement = element.select("span.salary").first();
@@ -96,6 +101,17 @@ public class TrudComStrategy extends AbstractStrategy implements Strategy {
         locationString = vacancyLocationName == null ? "" : vacancyLocationName.trim();
         locationString = getMappedLocationValue(locationString).replace("\"", "");
         String result = URL_FORMAT.replace("{JOB_STRING}", jobString).replace("{LOCATION_STRING}", locationString);
+        if (!"ua".equals(locationString)) {
+            result = result.replace("/jobs", "");
+        }
+        return result;
+    }
+
+    private String getUrlOfVacancy(String vacancyTitle) {
+        String result = URL_FORMAT
+                .replace("{JOB_STRING}", vacancyTitle)
+                .replace("{LOCATION_STRING}", locationString)
+                .replace("&page={PAGE_VALUE}", "");
         if (!"ua".equals(locationString)) {
             result = result.replace("/jobs", "");
         }
