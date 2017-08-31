@@ -8,94 +8,76 @@ import org.jsoup.select.Elements;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-//https://ua.indeed.com/вакансии?q=java&l=Одесса&start=0
-public class UaIndeedComStrategy extends AbstractStrategy implements Strategy {
-    private static final String SITE_NAME = "https://ua.indeed.com";
-    private static final String URL_FORMAT = SITE_NAME + "/вакансии?q={JOB_STRING}&l={LOCATION_STRING}&start={PAGE_VALUE}";
-    private static final int VACANCY_ITEMS_PER_PAGE = 10;
-
-    private String prevPrevPageLabel = null;
-    private String prevPageLabel = null;
+// https://ua.jooble.org/работа-java/Одесса?p=1
+public class UaJoobleOrgStrategy extends AbstractStrategy implements Strategy {
+    private static final String SITE_NAME = "https://ua.jooble.org";
+    private static final String URL_FORMAT = SITE_NAME + "/работа{JOB_STRING}/{LOCATION_STRING}?p={PAGE_VALUE}";
 
     @Override
     protected int getMinimalEnabledPageNum() {
-        return 0;
+        return 1;
     }
 
     @Override
     protected Elements getVacancyElements(Document doc, int page) {
-        Element vacanciesCountElement = doc.select("div#searchCount").first();
-        if (vacanciesCountElement == null) {
-            return null;
-        }
-        String vacanciesCountStr = vacanciesCountElement.text().trim();
-        if (vacanciesCountStr != null && (vacanciesCountStr.equals(prevPrevPageLabel) || vacanciesCountStr.equals(prevPageLabel))) {
-            prevPrevPageLabel = null;
-            prevPageLabel = null;
-            return null;
-        }
-
-        prevPrevPageLabel = prevPageLabel;
-        prevPageLabel = vacanciesCountStr;
-        return doc.select("div.result");
+        return doc.select("div.vacancy_wrapper");
     }
 
     @Override
     protected Vacancy getVacancyFromElement(Element element) {
-        Element sponsoredElement = element.select(".sponsoredGray").first();
-        if (sponsoredElement != null || element.hasClass("sjlast")) {
-            return null;
-        }
-
         Vacancy vacancy = new Vacancy();
 
         vacancy.setPublisherSiteName(SITE_NAME);
 
-        vacancy.setIdFromPublisherSite(element.attr("data-jk").trim());
+        vacancy.setIdFromPublisherSite(element.id().trim());
 
-        Element titleElement = element.select(".jobtitle a").first();
-        vacancy.setUrl(SITE_NAME + titleElement.attr("href"));
-        String titleStr = titleElement.text().trim();
+        Element titleElement = element.select("a.link-position").first();
+        vacancy.setUrl(titleElement.attr("href"));
+        String titleStr = titleElement.select(".position").text().trim();
         vacancy.setTitle(titleStr);
 
-        Element companyElement = element.select(".company span").first();
+        Element companyElement = element.select(".company-name").first();
         if (companyElement != null) {
             String companyStr = companyElement.text().replaceAll("\\u00a0", " ").trim();
             vacancy.setCompanyName(companyStr);
         }
 
-        Element locationElement = element.select(".location span").first();
+        Element locationElement = element.select(".job-location").first();
         if (locationElement != null) {
             vacancy.setCity(locationElement.text().trim());
         }
 
-        Element timeAgoElement = element.select(".date").first();
+        Element timeAgoElement = element.select(".date_add").first();
         String timeAgo = null;
         if (timeAgoElement != null) {
-            timeAgo = timeAgoElement.text();
+            timeAgo = timeAgoElement.text().trim();
         }
-        vacancy.setVacancyDate(getVacancyDate(timeAgo));
+        Date vacansyDate = getVacancyDate(timeAgo);
+        if (vacansyDate == null) {
+            return null;
+        }
+        vacancy.setVacancyDate(vacansyDate);
 
-        // No salary data
-//        Element salaryElement = element.select(".salary").first();
-//        if (salaryElement != null) {
-//            vacancy.setSalary(salaryElement.text());
-//        }
+        Element salaryElement = element.select(".salary").first();
+        if (salaryElement != null) {
+            vacancy.setSalary(salaryElement.text().trim());
+        }
 
         return vacancy;
     }
 
     @Override
     protected String getUrlOfWantedPage(String vacancyJobString, String vacancyLocationName) {
-        String jobString =  vacancyJobString == null ? "" : vacancyJobString.trim().replaceAll("\\s+", "+");
+        String jobString =  vacancyJobString == null ? "" : "-" + vacancyJobString.trim().replaceAll("\\s+", "+");
         String locationString = vacancyLocationName == null ? "" : vacancyLocationName.trim();
         locationString = getMappedLocationValue(locationString).replace("\"", "");
-        return URL_FORMAT.replace("{JOB_STRING}", jobString).replace("{LOCATION_STRING}", locationString);
-    }
-
-    @Override
-    protected int getPageValue(int pageNum) {
-        return pageNum * VACANCY_ITEMS_PER_PAGE;
+        String result = URL_FORMAT.replace("{JOB_STRING}", jobString);
+        if ("".equals(locationString)) {
+            return result.replace("/{LOCATION_STRING}", locationString);
+        }
+        else {
+            return result.replace("{LOCATION_STRING}", locationString);
+        }
     }
 
     // timeAgo =
@@ -111,14 +93,14 @@ public class UaIndeedComStrategy extends AbstractStrategy implements Strategy {
         if (timeAgo == null) {
             return new Date();
         }
+        boolean containsBigger = timeAgo.contains("более");
+        timeAgo = timeAgo.replace("более", "").replace("Быстрый отклик", "").trim();
 
         LocalDateTime ldt = LocalDateTime.now();
         String[] words = timeAgo.split("[\\u00a0\\s]+");
         if (words.length >= 2) {
-            boolean containsPlus = false;
-            if (words[0].contains("+")) {
-                containsPlus = true;
-            }
+
+
             words[0] = words[0].replace("+", "").trim();
             int val = Integer.parseInt(words[0].trim());
 
@@ -129,8 +111,8 @@ public class UaIndeedComStrategy extends AbstractStrategy implements Strategy {
                 ldt = ldt.minusHours(val);
             }
             else if (words[1].contains("ден") || words[1].contains("дня") || words[1].contains("дне")) {
-                if (containsPlus) {
-                    val += 30;
+                if (val > 31) {
+                    return null;
                 }
                 ldt = ldt.minusDays(val);
             }
@@ -138,12 +120,15 @@ public class UaIndeedComStrategy extends AbstractStrategy implements Strategy {
                 ldt = ldt.minusWeeks(val);
             }
             else if (words[1].contains("месяц")) {
+                if (containsBigger) {
+                    val += 1;
+                }
+                if (val > 1) {
+                    return null;
+                }
                 ldt = ldt.minusMonths(val);
             }
         }
         return java.sql.Date.valueOf(ldt.toLocalDate());
     }
-
-
 }
-

@@ -30,6 +30,9 @@ public class ProvidersFactory {
         else if ("UaIndeedComStrategy".equals(strategyClassName)) {
             return new Provider(new UaIndeedComStrategy());
         }
+        else if ("UaJoobleOrgStrategy".equals(strategyClassName)) {
+            return new Provider(new UaJoobleOrgStrategy());
+        }
 
 
         else {
