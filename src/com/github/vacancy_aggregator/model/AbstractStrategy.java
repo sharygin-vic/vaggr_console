@@ -7,9 +7,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,9 @@ public abstract class AbstractStrategy implements Strategy {
         int page = getMinimalEnabledPageNum();
 
         String urlOfWantedPage = getUrlOfWantedPage(vacancyJobString, vacancyLocationName);
+//        System.out.println(urlOfWantedPage);
+
+        System.out.print(this.getVacanciesSourceName() + "   page:");
 
         while (true) {
             try {
@@ -35,13 +40,7 @@ public abstract class AbstractStrategy implements Strategy {
                 }
 //                System.out.println(doc);
 
-//                System.out.println();
-//                System.out.println("-----------------------------------------");
-//                System.out.println("( " + vacancyJobString + " - " + vacancyLocationName + " )   " + urlOfWantedPage + "    page = " + page);
-//                System.out.println("-----------------------------------------");
-//                System.out.println();
-
-
+                System.out.print("  " + page);
 
                 Elements elements = getVacancyElements(doc, page);
                 if (elements == null || elements.size() == 0) {
@@ -62,9 +61,12 @@ public abstract class AbstractStrategy implements Strategy {
                 e.printStackTrace();
             }
         }
+        System.out.println();
         return res;
     }
 
+    @Override
+    public abstract String getVacanciesSourceName();
 
     protected abstract int getMinimalEnabledPageNum();    // 0 or 1
 
@@ -100,8 +102,8 @@ public abstract class AbstractStrategy implements Strategy {
         }
         String result;
         Properties prop = new Properties();
-        try (Reader reader = new FileReader(
-                Paths.get(PathHelper.getConfigSysAbsolutePathString() + this.getClass().getSimpleName() + "Locations.properties").toFile())
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(PathHelper.getConfigSysAbsolutePathString() + this.getClass().getSimpleName() + "Locations.properties"),
+                StandardCharsets.UTF_8)
         ){
             prop.load(reader);
             result = prop.getProperty(locationString);

@@ -77,4 +77,9 @@ public class MoikrugStrategy extends AbstractStrategy implements Strategy {
         return URL_FORMAT.replace("{JOB_STRING}", jobString).replace("{LOCATION_STRING}", locationString);
     }
 
+    @Override
+    public String getVacanciesSourceName() {
+        return SITE_NAME;
+    }
+
 }

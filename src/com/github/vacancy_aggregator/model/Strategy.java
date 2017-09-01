@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface Strategy {
     List<Vacancy> getVacancies(String vacancyJobString, String vacancyLocationName);
+    String getVacanciesSourceName();
 }

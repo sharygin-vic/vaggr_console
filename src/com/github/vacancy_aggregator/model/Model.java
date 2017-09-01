@@ -24,6 +24,9 @@ public class Model {
 
     public void searchParamsChanged(VacanciesSearchCommand vacanciesSearchCommand) {
         List<Vacancy> vacancies = new ArrayList<Vacancy>();
+
+        System.out.println(vacanciesSearchCommand.getVacancyLocationName() + " - " + vacanciesSearchCommand.getVacancyJobString());
+
         for (Provider provider : providers) {
             vacancies.addAll(provider.getJavaVacancies(vacanciesSearchCommand));
         }

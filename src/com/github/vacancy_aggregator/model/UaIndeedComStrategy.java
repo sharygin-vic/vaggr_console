@@ -144,6 +144,10 @@ public class UaIndeedComStrategy extends AbstractStrategy implements Strategy {
         return java.sql.Date.valueOf(ldt.toLocalDate());
     }
 
+    @Override
+    public String getVacanciesSourceName() {
+        return SITE_NAME;
+    }
 
 }
 

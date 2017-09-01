@@ -118,4 +118,9 @@ public class TrudComStrategy extends AbstractStrategy implements Strategy {
         return result;
     }
 
+    @Override
+    public String getVacanciesSourceName() {
+        return SITE_NAME;
+    }
+
 }
